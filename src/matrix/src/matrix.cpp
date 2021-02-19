@@ -1,5 +1,4 @@
-#include "matrix.h"
-#include "complex.h"
+#include "../include/matrix.h"
 
 #include <iostream>
 #include <fstream>
