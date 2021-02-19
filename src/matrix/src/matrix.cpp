@@ -1,24 +1,26 @@
 #include "matrix.h"
+#include "complex.h"
 
 #include <iostream>
-#include <istream>
-#include <ostream>
 #include <fstream>
 #include <sstream>
 
-Matrix::Matrix() {
-    _m = {{0}};
+template <typename T>
+Matrix<T>::Matrix() {
+    _m = {{(T)0}};
     _h = 1;
     _w = 1;
 }
 
-Matrix::Matrix(int h, int w) {
-    _m = std::vector<std::vector<int>>(h, std::vector<int>(w, 0));
+template <typename T>
+Matrix<T>::Matrix(int h, int w) {
+    _m = std::vector<std::vector<T>>(h, std::vector<T>(w, (T)0));
     _h = h;
     _w = w;
 }
 
-bool Matrix::checkAndSet(std::vector<std::vector<int>> m) {
+template <typename T>
+bool Matrix<T>::checkAndSet(std::vector<std::vector<T>> m) {
     int h = m.size();
     if (h == 0) {
         std::cerr << "Ошибка. Высота матрицы 0" << std::endl;
@@ -41,8 +43,9 @@ bool Matrix::checkAndSet(std::vector<std::vector<int>> m) {
     return true;
 }
 
-bool Matrix::fromStream(std::istream &in) {
-    std::vector<std::vector<int>> m;
+template <typename T>
+bool Matrix<T>::fromStream(std::istream &in) {
+    std::vector<std::vector<T>> m;
     if (in) {
         std::string line;
         int j = 0;
@@ -50,7 +53,7 @@ bool Matrix::fromStream(std::istream &in) {
             // Parse the line using a string stream
             std::istringstream row(line);
             m.push_back({});
-            int got;
+            T got;
             while (row >> got) {
                 m[j].push_back(got);
             }
@@ -64,28 +67,32 @@ bool Matrix::fromStream(std::istream &in) {
     return checkAndSet(m);
 }
 
-Matrix::Matrix(std::vector<std::vector<int>> m) {
+template <typename T>
+Matrix<T>::Matrix(std::vector<std::vector<T>> m) {
     checkAndSet(m);
 }
 
-Matrix::Matrix(const Matrix& from) {
+template <typename T>
+Matrix<T>::Matrix(const Matrix& from) {
     _m = from._m;
     _w = from._w;
     _h = from._h;
 }
 
-bool Matrix::input() {
+template <typename T>
+bool Matrix<T>::input() {
     return fromStream(std::cin);
 }
 
-bool Matrix::interactiveInput() {
+template <typename T>
+bool Matrix<T>::interactiveInput() {
     int h, w;
     std::cout << "Введите высоту матрицы: ";
     std::cin >> h;
     std::cout << "Введите ширину матрицы: ";
     std::cin >> w;
 
-    std::vector<std::vector<int>> m(h, std::vector<int>(w, 0));
+    std::vector<std::vector<T>> m(h, std::vector<T>(w, (T)0));
     std::cout << "Введите значения матрицы: " << std::endl;
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
@@ -99,7 +106,8 @@ bool Matrix::interactiveInput() {
     return true;
 }
 
-bool Matrix::toStream(std::ostream& out) {
+template <typename T>
+bool Matrix<T>::toStream(std::ostream& out) {
     if (_w == 0) {
         std::cerr << "Пустая матрица" << std::endl;
         return false;
@@ -113,11 +121,13 @@ bool Matrix::toStream(std::ostream& out) {
     return true;
 }
 
-bool Matrix::show() {
+template <typename T>
+bool Matrix<T>::show() {
     return toStream(std::cout);
 }
 
-bool Matrix::set(int x, int y, int n) {
+template <typename T>
+bool Matrix<T>::set(int x, int y, T n) {
     if (x < 0 || x >= _w) {
         std::cerr << "Индекс X не существует" << std::endl;
         return false;
@@ -130,42 +140,61 @@ bool Matrix::set(int x, int y, int n) {
     return true;
 }
 
-int Matrix::get(int x, int y) {
+template <typename T>
+T Matrix<T>::get(int x, int y) {
     if (x < 0 || x >= _w) {
         std::cerr << "Индекс X не существует" << std::endl;
-        return false;
+        return (T)0;
     }
     if (y < 0 || y >= _h) {
         std::cerr << "Индекс Y не существует" << std::endl;
-        return false;
+        return (T)0;
     }
     return _m[y][x];
 }
 
-bool Matrix::load(std::string filename) {
+template <typename T>
+T& Matrix<T>::operator()(int x, int y) {
+    assert(x < 0 || x >= _w);
+    assert(y < 0 || y >= _h);
+    return _m[y][x];
+}
+
+template <typename T>
+const T& Matrix<T>::operator()(int x, int y) const {
+    assert(x < 0 || x >= _w);
+    assert(y < 0 || y >= _h);
+    return _m[y][x];
+}
+
+template <typename T>
+bool Matrix<T>::load(std::string filename) {
     std::ifstream fin(filename);
     return fromStream(fin);
 }
 
-bool Matrix::write(std::string filename) {
+template <typename T>
+bool Matrix<T>::write(std::string filename) {
     std::ofstream f(filename);
     return toStream(f);
 }
 
-Matrix& Matrix::operator=(const Matrix& from) {
+template <typename T>
+Matrix<T>& Matrix<T>::operator=(const Matrix<T>& from) {
     _w = from._w;
     _h = from._h;
     _m = from._m;
     return *this;
 }
 
-Matrix operator+(const Matrix& m1, const Matrix& m2) {
+template <typename T>
+Matrix<T> operator+(const Matrix<T>& m1, const Matrix<T>& m2) {
     if (m1._h != m2._h || m1._w != m2._w) {
         std::cerr << "Невозможно сложить матрицы" << std::endl;
-        Matrix result;
+        Matrix<T> result;
         return result;
     }
-    Matrix result(m1._h, m2._w);
+    Matrix<T> result(m1._h, m2._w);
     for (int i = 0; i < m1._h; i++) {
         for (int j = 0; j < m1._w; j++) {
             result._m[i][j] = m1._m[i][j] + m2._m[i][j];
@@ -174,7 +203,8 @@ Matrix operator+(const Matrix& m1, const Matrix& m2) {
     return result;
 }
 
-Matrix Matrix::operator+=(const Matrix& m) {
+template <typename T>
+Matrix<T> Matrix<T>::operator+=(const Matrix<T>& m) {
     if (_h != m._h || _w != m._w) {
         std::cerr << "Невозможно сложить матрицы" << std::endl;
         return *this;
@@ -187,10 +217,11 @@ Matrix Matrix::operator+=(const Matrix& m) {
     return *this;
 }
 
-Matrix operator*(const Matrix& m1, const Matrix& m2) {
+template <typename T>
+Matrix<T> operator*(const Matrix<T>& m1, const Matrix<T>& m2) {
     if (m1._w != m2._h) {
         std::cerr << "Невозможно умножить матрицы" << std::endl;
-        Matrix result;
+        Matrix<T> result;
         return result;
     }
     Matrix result(m1._h, m2._w);
@@ -204,12 +235,13 @@ Matrix operator*(const Matrix& m1, const Matrix& m2) {
     return result;
 }
 
-Matrix Matrix::operator*=(const Matrix& m) {
+template <typename T>
+Matrix<T> Matrix<T>::operator*=(const Matrix<T>& m) {
     if (_w != m._h) {
         std::cerr << "Невозможно умножить матрицы" << std::endl;
         return *this;
     }
-    std::vector<std::vector<int>> _mnew = std::vector<std::vector<int>>(_h, std::vector<int>(_w, 0));
+    std::vector<std::vector<T>> _mnew(_h, std::vector<T>(_w, (T)0));
     for (int i = 0; i < _h; i++) {
         for (int j = 0; j < m._w; j++) {
             for (int k = 0; k < _w; k++) {
@@ -221,3 +253,45 @@ Matrix Matrix::operator*=(const Matrix& m) {
     _m = _mnew;
     return *this;
 }
+
+template <typename T>
+Matrix<T> operator*(const Matrix<T>& m1, T t) {
+    Matrix result(m1._h, m1._w);
+    for (int i = 0; i < m1._h; i++) {
+        for (int j = 0; j < m1._w; j++) {
+            result._m[i][j] = m1._m[i][j] * t;
+        }
+    }
+    return result;
+}
+
+template <typename T>
+Matrix<T> Matrix<T>::operator*=(T t) {
+    for (int i = 0; i < _h; i++) {
+        for (int j = 0; j < _w; j++) {
+            _m[i][j] *= t;
+        }
+    }
+    return *this;
+}
+
+template <typename T>
+Matrix<T> operator*(T t, const Matrix<T>& m2) {
+    Matrix result(m2._h, m2._w);
+    for (int i = 0; i < m2._h; i++) {
+        for (int j = 0; j < m2._w; j++) {
+            result._m[i][j] = t * m2._m[i][j];
+        }
+    }
+    return result;
+}
+
+template class Matrix<int>;
+template class Matrix<float>;
+template class Matrix<double>;
+template class Matrix<long>;
+template class Matrix<long long>;
+
+template class Matrix<std::complex<double>>;
+
+template class Matrix<Complex<double>>;

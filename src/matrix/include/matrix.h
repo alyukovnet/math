@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <string>
+#include <complex>
 
 /*!
 \brief Матрица
@@ -15,9 +16,10 @@
 Описание
 
 */
+template <typename T>
 class Matrix {
 private:
-    std::vector<std::vector<int>> _m; //!< Матрица
+    std::vector<std::vector<T>> _m; //!< Матрица
     int _h; //!< Высота
     int _w; //!< Ширина
 
@@ -25,7 +27,7 @@ private:
     Проверка матрицы на валидность и установка
     \result Отсутствие ошибки
     */
-    bool checkAndSet(std::vector<std::vector<int>>);
+    bool checkAndSet(std::vector<std::vector<T>>);
 
 public:
     /*!
@@ -42,7 +44,7 @@ public:
     Конструктор из векторов
     \param[in] m
     */
-    Matrix(std::vector<std::vector<int>>);
+    Matrix(std::vector<std::vector<T>>);
 
     /*!
     Конструктор копирования
@@ -87,7 +89,7 @@ public:
     \param[in] n
     \result Отсутствие ошибки
     */
-    bool set(int, int, int);
+    bool set(int, int, T);
 
     /*!
     Получение значения поля
@@ -95,7 +97,23 @@ public:
     \param[in] y
     \result Значение поля
     */
-    int get(int, int);
+    T get(int, int);
+
+    /*!
+    Получение значения поля
+    \param[in] x
+    \param[in] y
+    \result Ссылка на поле
+    */
+    T& operator()(int, int);
+
+    /*!
+    Получение значения поля
+    \param[in] x
+    \param[in] y
+    \result Ссылка на поле
+    */
+    const T& operator()(int, int) const;
 
     /*!
     Импорт из файла
@@ -137,6 +155,24 @@ public:
     Умножение матриц
     */
     Matrix operator*=(const Matrix&);
+
+    /*!
+    Умножение матрицы на T
+    \result Произведение матриц
+    */
+    friend Matrix operator*(const Matrix&, T);
+
+    /*!
+    Умножение матрицы на T
+    */
+    Matrix operator*=(T);
+
+    /*!
+    Умножение T на матрицу
+    \result Произведение матриц
+    */
+    friend Matrix operator*(T, const Matrix&);
 };
+
 
 #endif //MATRIX_H
