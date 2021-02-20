@@ -8,18 +8,18 @@ INC = -std=c++17 -I$(MATRIX_MODULE)/include -I./thirdparty
 # Targets
 all: main
 
-main: $(SRC)/main.cpp complex.o # matrix.o
-	$(CC) $(INC) -o main $(SRC)/main.cpp complex.o # matrix.o
+main: $(SRC)/main.cpp complex.o
+	$(CC) $(INC) -o main $(SRC)/main.cpp complex.o
 
-complex.o: $(MATRIX_MODULE)/src/complex.cpp $(MATRIX_MODULE)/include/complex.h
+complex.o: $(MATRIX_MODULE)/src/complex.cpp
 	$(CC) $(INC) -o complex.o -c $(MATRIX_MODULE)/src/complex.cpp
 
-matrix.o: $(MATRIX_MODULE)/src/matrix.cpp $(MATRIX_MODULE)/include/matrix.h
+matrix.o: $(MATRIX_MODULE)/src/matrix.cpp
 	$(CC) $(INC) -o matrix.o -c $(MATRIX_MODULE)/include/matrix.cpp
 
 # Tests
-test: test_complex.o # test_matrix.o
-	./test_complex.o # && ./test_matrix.o
+test: test_complex.o
+	./test_complex.o
 
 test_complex.o: $(MATRIX_MODULE)/test/test_complex.cpp complex.o
 	$(CC) $(INC) -o test_complex.o $(MATRIX_MODULE)/test/test_complex.cpp complex.o

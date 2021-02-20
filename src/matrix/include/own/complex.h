@@ -6,6 +6,8 @@
 
 #include <string>
 
+namespace own {
+
 /*!
  * @brief Complex number
  * @tparam T Number type
@@ -35,7 +37,7 @@ public:
     Complex(T real, T imag);
 
     /*!
-     * Copy constructor
+     * Copy constructor (default)
      * @param c Original object
      */
     Complex(const Complex<T> &c);
@@ -93,14 +95,14 @@ public:
      * @param[out] c Complex number
      * @return Input stream
      */
-    friend std::istream& operator >> (std::istream &in, const Complex<T> &c);
+    friend std::istream& operator >> (std::istream &in, Complex<T> &c);
 
     /*!
-     * Assignment operator
+     * Assignment operator (default)
      * @param[in] c Complex number
      * @return Set complex number
      */
-    Complex<T> operator = (const Complex<T> &c);
+    Complex<T>& operator = (const Complex<T> &c);
 
     /*!
      * Unary plus
@@ -186,7 +188,7 @@ public:
      * @param[in] c2 Complex number
      * @return Equality of the numbers
      */
-    friend const bool operator == (const Complex<T> &c1, const Complex<T> &c2);
+    friend bool operator == (const Complex<T> &c1, const Complex<T> &c2);
 
     /*!
      * Compare for inequality
@@ -194,13 +196,15 @@ public:
      * @param[in] c2 Complex number
      * @return Inequality of the numbers
      */
-    friend const bool operator != (const Complex<T> &c1, const Complex<T> &c2);
+    friend bool operator != (const Complex<T> &c1, const Complex<T> &c2);
 
     /*!
      * Check if number is zero
      * @return True if not zero
      */
-    operator bool() const;
+    explicit operator bool() const noexcept;
 };
+
+} //namespace own
 
 #endif //COMPLEX_H
