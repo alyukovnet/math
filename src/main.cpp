@@ -1,5 +1,5 @@
 #include <iostream>
-#include "matrix/include/own/complex.h"
+#include <own.h>
 
 int main(int argc, char* argv[]) {
     own::Complex<float> a(1.0);

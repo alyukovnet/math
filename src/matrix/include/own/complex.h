@@ -1,8 +1,8 @@
 /*!
  * @file Complex class declaration
  */
-#ifndef COMPLEX_H
-#define COMPLEX_H
+#ifndef OWN_COMPLEX_H
+#define OWN_COMPLEX_H
 
 #include <string>
 
@@ -50,6 +50,11 @@ public:
     Complex(const std::string &s);
 
     /*!
+     * Destructor
+     */
+    ~Complex();
+
+    /*!
      * Set complex number from string
      * Supported: n+mi, -n+mi, n-mi, -n-mi
      * @param s String
@@ -85,17 +90,21 @@ public:
      * Output to stream
      * @param[out] out Output stream
      * @param[in] c Complex number
+     * @tparam U Number type
      * @return Output stream
      */
-    friend std::ostream& operator << (std::ostream &out, const Complex<T> &c);
+    template <typename U>
+    friend std::ostream& operator << (std::ostream &out, const Complex<U> &c);
 
     /*!
      * Input from stream
      * @param[in] in Input stream
      * @param[out] c Complex number
+     * @tparam U Number type
      * @return Input stream
      */
-    friend std::istream& operator >> (std::istream &in, Complex<T> &c);
+    template <typename U>
+    friend std::istream& operator >> (std::istream &in, Complex<U> &c);
 
     /*!
      * Assignment operator (default)
@@ -107,96 +116,120 @@ public:
     /*!
      * Unary plus
      * @param[in] c Complex number
+     * @tparam U Number type
      * @return Unchanged complex number
      */
-    friend Complex<T> operator + (const Complex<T> &c);
+    template <typename U>
+    friend Complex<U> operator + (const Complex<U> &c);
 
     /*!
      * Additive inverse
      * @param[in] c Complex number
+     * @tparam U Number type
      * @return Additive inverse complex number
      */
-    friend Complex<T> operator - (const Complex<T> &c);
+    template <typename U>
+    friend Complex<U> operator - (const Complex<U> &c);
 
     /*!
      * Addition
      * @param[in] c1 Complex number
      * @param[in] c2 Complex number
+     * @tparam U Number type
      * @return Sum of the numbers
      */
-    friend Complex<T> operator + (const Complex<T> &c1, const Complex<T> &c2);
+    template <typename U>
+    friend Complex<U> operator + (const Complex<U> &c1, const Complex<U> &c2);
 
     /*!
      * Subtraction
      * @param[in] c1 Complex number
      * @param[in] c2 Complex number
+     * @tparam U Number type
      * @return Difference of the numbers
      */
-    friend Complex<T> operator - (const Complex<T> &c1, const Complex<T> &c2);
+    template <typename U>
+    friend Complex<U> operator - (const Complex<U> &c1, const Complex<U> &c2);
 
     /*!
      * Addition
      * @param[in,out] c1 Complex number
      * @param[in] c2 Complex number
+     * @tparam U Number type
      * @return Sum of the numbers
      */
-    friend Complex<T> operator += (Complex<T> &c1, const Complex<T> &c2);
+    template <typename U>
+    friend Complex<U> operator += (Complex<U> &c1, const Complex<U> &c2);
 
     /*!
      * Subtraction
      * @param[in,out] c1 Complex number
      * @param[in] c2 Complex number
+     * @tparam U Number type
      * @return Sum of the numbers
      */
-    friend Complex<T> operator -= (Complex<T> &c1, const Complex<T> &c2);
+    template <typename U>
+    friend Complex<U> operator -= (Complex<U> &c1, const Complex<U> &c2);
 
     /*!
      * Multiplication
      * @param[in] c1 Complex number
      * @param[in] c2 Complex number
+     * @tparam U Number type
      * @return Multiplication of the numbers
      */
-    friend Complex<T> operator * (const Complex<T> &c1, const Complex<T> &c2);
+    template <typename U>
+    friend Complex<U> operator * (const Complex<U> &c1, const Complex<U> &c2);
 
     /*!
      * Division
      * @param[in] c1 Complex number
      * @param[in] c2 Complex number
+     * @tparam U Number type
      * @return Division of the numbers
      */
-    friend Complex<T> operator / (const Complex<T> &c1, const Complex<T> &c2);
+    template <typename U>
+    friend Complex<U> operator / (const Complex<U> &c1, const Complex<U> &c2);
 
     /*!
      * Multiplication
      * @param[in,out] c1 Complex number
      * @param[in] c2 Complex number
+     * @tparam U Number type
      * @return Multiplication of the numbers
      */
-    friend Complex<T> operator *= (Complex<T> &c1, const Complex<T> &c2);
+    template <typename U>
+    friend Complex<U> operator *= (Complex<U> &c1, const Complex<U> &c2);
 
     /*!
      * Division
      * @param[in,out] c1 Complex number
      * @param[in] c2 Complex number
+     * @tparam U Number type
      * @return Division of the numbers
      */
-    friend Complex<T> operator /= (Complex<T> &c1, const Complex<T> &c2);
+    template <typename U>
+    friend Complex<U> operator /= (Complex<U> &c1, const Complex<U> &c2);
 
     /*!
      * Compare for equality
      * @param[in] c1 Complex number
      * @param[in] c2 Complex number
+     * @tparam U Number type
      * @return Equality of the numbers
      */
-    friend bool operator == (const Complex<T> &c1, const Complex<T> &c2);
+    template <typename U>
+    friend bool operator == (const Complex<U> &c1, const Complex<U> &c2);
 
     /*!
      * Compare for inequality
      * @param[in] c1 Complex number
      * @param[in] c2 Complex number
+     * @tparam U Number type
      * @return Inequality of the numbers
      */
-    friend bool operator != (const Complex<T> &c1, const Complex<T> &c2);
+    template <typename U>
+    friend bool operator != (const Complex<U> &c1, const Complex<U> &c2);
 
     /*!
      * Check if number is zero
@@ -207,4 +240,7 @@ public:
 
 } //namespace own
 
-#endif //COMPLEX_H
+// Complex class implementation
+#include "../../src/complex.hh"
+
+#endif //OWN_COMPLEX_H
