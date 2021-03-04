@@ -3,25 +3,26 @@
 \brief Заголовочный файл класса Матрица
 
 */
-#ifndef MATRIX_H
-#define MATRIX_H
+#ifndef OWN_MATRIX_H
+#define OWN_MATRIX_H
 
 #include <vector>
 #include <string>
 #include <complex>
 
-/*!
+namespace own {
 \brief Матрица
 
-Описание
-
-*/
+/*!
+ * @brief Matrix
+ * @tparam T Data type
+ */
 template <typename T>
 class Matrix {
 private:
     std::vector<std::vector<T>> _m; //!< Матрица
-    int _h; //!< Высота
-    int _w; //!< Ширина
+    int _h; //!< Height
+    int _w; //!< Width
 
     /*!
     Проверка матрицы на валидность и установка
@@ -31,14 +32,16 @@ private:
 
 public:
     /*!
-    Конструктор без параметров
-    */
+     * Null matrix 1x1
+     */
     Matrix();
 
     /*!
-    Конструктор с размерами матрицы
-    */
-    Matrix(int, int);
+     * Matrix from height and width,
+     * @param[in] h Height
+     * @param[in] w Width
+     */
+    Matrix(int h, int w);
 
     /*!
     Конструктор из векторов
@@ -47,10 +50,10 @@ public:
     Matrix(std::vector<std::vector<T>>);
 
     /*!
-    Конструктор копирования
-    \param[in] from Исходный объект
+     * Copy constructor
+     * @param[in] from Original object
     */
-    Matrix(const Matrix&);
+    Matrix(const Matrix& from);
 
     /*!
     Импорт матрицы из Stream
@@ -174,5 +177,6 @@ public:
     friend Matrix operator*(T, const Matrix&);
 };
 
+} //namespace own
 
-#endif //MATRIX_H
+#endif //OWN_MATRIX_H

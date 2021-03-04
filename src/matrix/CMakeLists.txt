@@ -3,8 +3,8 @@ project( own_matrix )
 
 set( CMAKE_CXX_STANDARD 17 )
 
-set( SOURCES src/complex.cpp )
-set( HEADERS include/own/complex.h )
+set( SOURCES src/complex.cpp src/matrix.cpp )
+set( HEADERS include/own/complex.h include/own/matrix.h )
 
 add_library( own_matrix ${SOURCES} ${HEADERS} )
 target_include_directories( own_matrix PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include )

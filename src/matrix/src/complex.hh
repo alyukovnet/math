@@ -13,11 +13,11 @@
 namespace own {
 
 template <typename T>
-Complex<T>::Complex() : _real((T)0), _imag((T)0) {
+Complex<T>::Complex() : _real((T)0), _imag((T) 0) {
 }
 
 template <typename T>
-Complex<T>::Complex(T real) : _real(real), _imag((T)0) {
+Complex<T>::Complex(T real) : _real(real), _imag((T) 0) {
 }
 
 template <typename T>
@@ -89,7 +89,7 @@ void Complex<T>::imag(T imag) {
 template <typename T>
 std::ostream& operator << (std::ostream &out, const Complex<T> &c) {
     out << c._real;
-    if (c._imag >= (T)0) {
+    if (c._imag >= (T) 0) {
         out << "+" << c._imag;
     } else {
         out << "-" << (- c._imag);
