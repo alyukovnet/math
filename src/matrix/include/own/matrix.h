@@ -8,10 +8,9 @@
 
 #include <vector>
 #include <string>
-#include <complex>
+#include <iostream>
 
 namespace own {
-\brief Матрица
 
 /*!
  * @brief Matrix
@@ -20,15 +19,9 @@ namespace own {
 template <typename T>
 class Matrix {
 private:
-    std::vector<std::vector<T>> _m; //!< Матрица
+    T **_a; //!< Matrix
     int _h; //!< Height
     int _w; //!< Width
-
-    /*!
-    Проверка матрицы на валидность и установка
-    \result Отсутствие ошибки
-    */
-    bool checkAndSet(std::vector<std::vector<T>>);
 
 public:
     /*!
@@ -44,10 +37,10 @@ public:
     Matrix(int h, int w);
 
     /*!
-    Конструктор из векторов
-    \param[in] m
+     * Matrix from 2D array
+     * @param[in] a 2D array
     */
-    Matrix(std::vector<std::vector<T>>);
+    Matrix(int h, int w, T **a);
 
     /*!
      * Copy constructor
@@ -56,125 +49,120 @@ public:
     Matrix(const Matrix& from);
 
     /*!
-    Импорт матрицы из Stream
-    \result Отсутствие ошибки
-    */
-    bool fromStream(std::istream&);
+     * Destructor
+     */
+    ~Matrix();
 
     /*!
-    Импорт из консоли
-    \result Отсутствие ошибки
-    */
-    bool input();
+     * Element value set
+     * @param[in] x X
+     * @param[in] y Y
+     * @param[in] n Value
+     * @result Отсутствие ошибки
+     */
+    bool set(int x, int y, T v);
 
     /*!
-    Интерактивный импорт из консоли
-    \result Отсутствие ошибки
-    */
+     * Получение значения поля
+     * @param[in] x X
+     * @param[in] y Y
+     * @result Value
+     */
+    T get(int x, int y);
+
+    /*!
+     * Interactive input from std::cin (deprecated)
+     * @return True if not errors
+     */
     bool interactiveInput();
 
     /*!
-    Экспорт матрицы в Stream
-    \result Отсутствие ошибки
-    */
-    bool toStream(std::ostream&);
+     * Output to stream
+     * @param[out] out Output stream
+     * @param[in] m Matrix
+     * @tparam U Number type
+     * @return Output stream
+     */
+    template <typename U>
+    friend std::ostream& operator << (std::ostream &out, const Matrix<U> &m);
 
     /*!
-    Вывод в консоль
-    \result Отсутствие ошибки
-    */
-    bool show();
+     * Input from stream
+     * @param[in] in Input stream
+     * @param[out] m Matrix
+     * @tparam U Number type
+     * @return Input stream
+     */
+    template <typename U>
+    friend std::istream& operator >> (std::ostream &out, const Matrix<U> &c);
 
     /*!
-    Установка значения поля
-    \param[in] x
-    \param[in] y
-    \param[in] n
-    \result Отсутствие ошибки
-    */
-    bool set(int, int, T);
-
-    /*!
-    Получение значения поля
-    \param[in] x
-    \param[in] y
-    \result Значение поля
-    */
-    T get(int, int);
-
-    /*!
-    Получение значения поля
-    \param[in] x
-    \param[in] y
-    \result Ссылка на поле
-    */
-    T& operator()(int, int);
-
-    /*!
-    Получение значения поля
-    \param[in] x
-    \param[in] y
-    \result Ссылка на поле
-    */
-    const T& operator()(int, int) const;
-
-    /*!
-    Импорт из файла
-    \param[in] filename Имя файла
-    \result Отсутствие ошибки
+     * Импорт из файла
+     * @param[in] filename Имя файла
+     * @result Отсутствие ошибки
     */
     bool load(std::string);
 
     /*!
-    Экспорт в файл
-    \param[out] filename Имя файла
-    \result Отсутствие ошибки
+     * Экспорт в файл
+     * @param[out] filename Имя файла
+     * @result Отсутствие ошибки
     */
-    bool write(std::string);
+    bool save(std::string);
 
     /*!
-    Оператор присваивания
-    */
-    Matrix& operator=(const Matrix&);
+     * Assignment operator
+     * @param[in] Matrix
+     * @result
+     */
+    Matrix& operator=(const Matrix &m);
 
     /*!
-    Суммирование матриц
-    \result Сумма матриц
-    */
-    friend Matrix operator+(const Matrix&, const Matrix&);
+     * Assignment operator
+     * @param[in] 2D array
+     * @result
+     */
+    Matrix& operator=(const T **a);
 
     /*!
-    Суммирование матриц
-    */
-    Matrix operator+=(const Matrix&);
+     * Суммирование матриц
+     * @result Сумма матриц
+     */
+    friend Matrix operator+(const Matrix &m1, const Matrix &m2);
 
     /*!
-    Умножение матриц
-    \result Произведение матриц
-    */
-    friend Matrix operator*(const Matrix&, const Matrix&);
+     * Суммирование матриц
+     */
+    Matrix operator+=(const Matrix &m);
 
     /*!
-    Умножение матриц
+     * Умножение матриц
+     * @result Произведение матриц
     */
-    Matrix operator*=(const Matrix&);
+    friend Matrix operator*(const Matrix &m1, const Matrix &m2);
 
     /*!
-    Умножение матрицы на T
-    \result Произведение матриц
-    */
-    friend Matrix operator*(const Matrix&, T);
+     * Умножение матриц
+     */
+    Matrix operator*=(const Matrix &m);
 
     /*!
-    Умножение матрицы на T
-    */
-    Matrix operator*=(T);
+     * Умножение матрицы на T
+     * @result Произведение матриц
+     */
+    friend Matrix operator*(const Matrix &m, T v);
 
     /*!
-    Умножение T на матрицу
-    \result Произведение матриц
-    */
-    friend Matrix operator*(T, const Matrix&);
+     * Умножение матрицы на T
+     */
+    Matrix operator*=(T v);
+
+    /*!
+     * Умножение T на матрицу
+     * @result Произведение матриц
+     */
+    friend Matrix operator*(T v, const Matrix &m);
+
 };
 
 } //namespace own
