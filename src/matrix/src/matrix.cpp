@@ -1,8 +1,14 @@
-#include "../include/own/matrix.h"
+#ifndef OWN_MATRIX_CPP
+#define OWN_MATRIX_CPP
+
+#include "own/matrix.h"
+#include "own/complex.h"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
+
+namespace own {
 
 template <typename T>
 Matrix<T>::Matrix() {
@@ -203,7 +209,7 @@ Matrix<T> operator+(const Matrix<T>& m1, const Matrix<T>& m2) {
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::operator+=(const Matrix<T>& m) {
+Matrix<T>& Matrix<T>::operator+=(const Matrix<T>& m) {
     if (_h != m._h || _w != m._w) {
         std::cerr << "Невозможно сложить матрицы" << std::endl;
         return *this;
@@ -223,7 +229,7 @@ Matrix<T> operator*(const Matrix<T>& m1, const Matrix<T>& m2) {
         Matrix<T> result;
         return result;
     }
-    Matrix result(m1._h, m2._w);
+    Matrix<T> result(m1._h, m2._w);
     for (int i = 0; i < m1._h; i++) {
         for (int j = 0; j < m2._w; j++) {
             for (int k = 0; k < m1._w; k++) {
@@ -235,7 +241,7 @@ Matrix<T> operator*(const Matrix<T>& m1, const Matrix<T>& m2) {
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::operator*=(const Matrix<T>& m) {
+Matrix<T>& Matrix<T>::operator*=(const Matrix<T>& m) {
     if (_w != m._h) {
         std::cerr << "Невозможно умножить матрицы" << std::endl;
         return *this;
@@ -255,7 +261,7 @@ Matrix<T> Matrix<T>::operator*=(const Matrix<T>& m) {
 
 template <typename T>
 Matrix<T> operator*(const Matrix<T>& m1, T t) {
-    Matrix result(m1._h, m1._w);
+    Matrix<T> result(m1._h, m1._w);
     for (int i = 0; i < m1._h; i++) {
         for (int j = 0; j < m1._w; j++) {
             result._m[i][j] = m1._m[i][j] * t;
@@ -265,7 +271,7 @@ Matrix<T> operator*(const Matrix<T>& m1, T t) {
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::operator*=(T t) {
+Matrix<T>& Matrix<T>::operator*=(T t) {
     for (int i = 0; i < _h; i++) {
         for (int j = 0; j < _w; j++) {
             _m[i][j] *= t;
@@ -276,7 +282,7 @@ Matrix<T> Matrix<T>::operator*=(T t) {
 
 template <typename T>
 Matrix<T> operator*(T t, const Matrix<T>& m2) {
-    Matrix result(m2._h, m2._w);
+    Matrix<T> result(m2._h, m2._w);
     for (int i = 0; i < m2._h; i++) {
         for (int j = 0; j < m2._w; j++) {
             result._m[i][j] = t * m2._m[i][j];
@@ -294,3 +300,7 @@ template class Matrix<long long>;
 template class Matrix<std::complex<double>>;
 
 template class Matrix<Complex<double>>;
+
+} //namespace own
+
+#endif //OWN_MATRIX_CPP

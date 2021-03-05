@@ -11,7 +11,6 @@
 #include <complex>
 
 namespace own {
-\brief Матрица
 
 /*!
  * @brief Matrix
@@ -135,48 +134,55 @@ public:
     /*!
     Оператор присваивания
     */
-    Matrix& operator=(const Matrix&);
+    Matrix<T>& operator=(const Matrix<T>&);
 
     /*!
     Суммирование матриц
     \result Сумма матриц
     */
-    friend Matrix operator+(const Matrix&, const Matrix&);
+    template <typename U>
+    friend Matrix<U> operator+(const Matrix<U>&, const Matrix<U>&);
 
     /*!
     Суммирование матриц
     */
-    Matrix operator+=(const Matrix&);
+    Matrix<T>& operator+=(const Matrix<T>&);
 
     /*!
     Умножение матриц
     \result Произведение матриц
     */
-    friend Matrix operator*(const Matrix&, const Matrix&);
+    template <typename U>
+    friend Matrix<U> operator*(const Matrix<U>&, const Matrix<U>&);
 
     /*!
     Умножение матриц
     */
-    Matrix operator*=(const Matrix&);
+    Matrix& operator*=(const Matrix<T>&);
 
     /*!
     Умножение матрицы на T
     \result Произведение матриц
     */
-    friend Matrix operator*(const Matrix&, T);
+    template <typename U>
+    friend Matrix<U> operator*(const Matrix<U>&, U);
 
     /*!
     Умножение матрицы на T
     */
-    Matrix operator*=(T);
+    Matrix<T>& operator*=(T);
 
     /*!
     Умножение T на матрицу
     \result Произведение матриц
     */
-    friend Matrix operator*(T, const Matrix&);
+    template <typename U>
+    friend Matrix<U>& operator*(T, const Matrix<U>&);
 };
 
 } //namespace own
+
+// Matrix class implementation
+#include "../../src/matrix.cpp"
 
 #endif //OWN_MATRIX_H

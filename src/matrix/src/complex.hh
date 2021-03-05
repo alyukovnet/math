@@ -39,7 +39,7 @@ Complex<T>::~Complex() = default;
 template <typename T>
 bool Complex<T>::fromString(const std::string &s) {
     if (s.length() < 4 || s[s.length()-1] != 'i') { // min len: n+mi
-        std::cerr << "Can't read complex" << std::endl;
+        // std::cerr << "Can't read complex" << std::endl;
         return false;
     }
     T real = _real, imag = _imag;
@@ -48,14 +48,14 @@ bool Complex<T>::fromString(const std::string &s) {
             std::stringstream ss(s.substr(0, i));
             ss >> real;
             if (ss.fail()) {
-                std::cerr << "Can't read complex real part" << std::endl;
+                //std::cerr << "Can't read complex real part" << std::endl;
                 return false;
             }
             ss.str(s.substr(i, s.length()-i-1)); // With sign, without 'i'
             ss.clear();
             ss >> imag;
             if (ss.fail()) {
-                std::cerr << "Can't read complex imaginary part" << std::endl;
+                //std::cerr << "Can't read complex imaginary part" << std::endl;
                 return false;
             }
             break;
@@ -90,9 +90,9 @@ template <typename T>
 std::ostream& operator << (std::ostream &out, const Complex<T> &c) {
     out << c._real;
     if (c._imag >= (T) 0) {
-        out << "+" << c._imag;
+        out << "+" << std::abs(c._imag);
     } else {
-        out << "-" << (- c._imag);
+        out << "-" << std::abs(- c._imag);
     }
     out << "i";
     return out;
