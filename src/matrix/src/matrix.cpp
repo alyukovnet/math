@@ -112,7 +112,7 @@ bool Matrix<T>::interactiveInput() {
 }
 
 template <typename T>
-bool Matrix<T>::toStream(std::ostream& out) {
+bool Matrix<T>::toStream(std::ostream& out) const {
     if (_w == 0) {
         std::cerr << "Пустая матрица" << std::endl;
         return false;
@@ -223,6 +223,36 @@ Matrix<T>& Matrix<T>::operator+=(const Matrix<T>& m) {
 }
 
 template <typename T>
+Matrix<T> operator-(const Matrix<T>& m1, const Matrix<T>& m2) {
+    if (m1._h != m2._h || m1._w != m2._w) {
+        std::cerr << "Невозможно сложить матрицы" << std::endl;
+        Matrix<T> result;
+        return result;
+    }
+    Matrix<T> result(m1._h, m2._w);
+    for (int i = 0; i < m1._h; i++) {
+        for (int j = 0; j < m1._w; j++) {
+            result._m[i][j] = m1._m[i][j] - m2._m[i][j];
+        }
+    }
+    return result;
+}
+
+template <typename T>
+Matrix<T>& Matrix<T>::operator-=(const Matrix<T>& m) {
+    if (_h != m._h || _w != m._w) {
+        std::cerr << "Невозможно сложить матрицы" << std::endl;
+        return *this;
+    }
+    for (int i = 0; i < m._h; i++) {
+        for (int j = 0; j < m._w; j++) {
+            _m[i][j] -= m._m[i][j];
+        }
+    }
+    return *this;
+}
+
+template <typename T>
 Matrix<T> operator*(const Matrix<T>& m1, const Matrix<T>& m2) {
     if (m1._w != m2._h) {
         std::cerr << "Невозможно умножить матрицы" << std::endl;
@@ -290,6 +320,19 @@ Matrix<T> operator*(T t, const Matrix<T>& m2) {
     }
     return result;
 }
+
+template <typename T>
+std::ostream& operator << (std::ostream &out, const Matrix<T> &c) {
+    c.toStream(out);
+    return out;
+}
+
+template <typename T>
+std::istream& operator >> (std::istream &in, Matrix<T> &c) {
+    c.fromStream(in);
+    return in;
+}
+
 
 template class Matrix<int>;
 template class Matrix<float>;

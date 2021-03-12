@@ -76,7 +76,7 @@ public:
     Экспорт матрицы в Stream
     \result Отсутствие ошибки
     */
-    bool toStream(std::ostream&);
+    bool toStream(std::ostream&) const;
 
     /*!
     Вывод в консоль
@@ -149,6 +149,18 @@ public:
     Matrix<T>& operator+=(const Matrix<T>&);
 
     /*!
+    Вычитание матриц
+    \result Разность матриц
+    */
+    template <typename U>
+    friend Matrix<U> operator-(const Matrix<U>&, const Matrix<U>&);
+
+    /*!
+    Вычитание матриц
+    */
+    Matrix<T>& operator-=(const Matrix<T>&);
+
+    /*!
     Умножение матриц
     \result Произведение матриц
     */
@@ -178,6 +190,27 @@ public:
     */
     template <typename U>
     friend Matrix<U>& operator*(T, const Matrix<U>&);
+
+    /*!
+     * Output to stream
+     * @param[out] out Output stream
+     * @param[in] c Complex number
+     * @tparam U Number type
+     * @return Output stream
+     */
+    template <typename U>
+    friend std::ostream& operator << (std::ostream &out, const Matrix<U> &c);
+
+    /*!
+     * Input from stream
+     * @param[in] in Input stream
+     * @param[out] c Complex number
+     * @tparam U Number type
+     * @return Input stream
+     */
+    template <typename U>
+    friend std::istream& operator >> (std::istream &in, Matrix<U> &c);
+
 };
 
 } //namespace own
