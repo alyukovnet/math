@@ -11,10 +11,12 @@ enable_testing()
 
 # UAV Lib
 add_subdirectory( src/matrix )
+add_subdirectory( src/polynomial )
 
 add_library( own INTERFACE )
 target_include_directories( own INTERFACE include )
 target_link_libraries( own INTERFACE own_matrix )
+target_link_libraries( own INTERFACE own_polynomial )
 
 # Executables
 add_executable( main src/main.cpp )
